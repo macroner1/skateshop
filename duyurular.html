@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Duyurular</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- Retro Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background: #0d0d0d;
+            color: #fff;
+            font-family: "Press Start 2P", cursive;
+            padding-top: 120px;
+        }
+
+        .ann-title {
+            text-align: center;
+            font-size: 22px;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+        }
+
+        /* GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card-pixel {
+            background: #1a1a1a;
+            border: 2px solid #3affff;
+            padding: 20px;
+            transition: 0.15s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-pixel:hover {
+            transform: translateY(-5px);
+            border-color: #ff00ff;
+        }
+
+        /* Glitch hover effect */
+        .card-pixel:hover::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 0, 255, 0.2);
+            mix-blend-mode: screen;
+            animation: glitch 0.3s;
+        }
+
+        @keyframes glitch {
+            0%  { clip-path: inset(0 0 70% 0); }
+            50% { clip-path: inset(40% 0 10% 0); }
+            100%{ clip-path: inset(20% 0 30% 0); }
+        }
+
+        /* MODAL */
+        .modal-pixel {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .modal-box {
+            background: #1a1a1a;
+            border: 3px solid #3affff;
+            padding: 25px;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .close-btn {
+            float: right;
+            cursor: pointer;
+            color: #ff3a3a;
+            font-size: 18px;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- BAŞLIK -->
+<h1 class="ann-title">DUYURULAR</h1>
+
+<!-- GRID -->
+<div class="grid" id="gridArea">
+    <!-- JS burayı otomatik dolduracak -->
+</div>
+
+<!-- MODAL -->
+<div class="modal-pixel" id="modalPixel">
+    <div class="modal-box">
+        <span class="close-btn" onclick="closeModal()">X</span>
+        <h3 id="modalTitle"></h3>
+        <p id="modalContent"></p>
+        <div id="modalFiles"></div>
+    </div>
+</div>
+
+<script>
+const announcements = [
+  {
+    title: "Lorem Ipsum Dolor Sit Amet",
+    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vitae urna sed velit bibendum tristique.",
+    files: ["lorem.pdf", "dokuman.docx", "gorsel1.jpg"]
+  },
+  {
+    title: "Consectetur Adipiscing Elit",
+    content: "Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    files: ["detay.pdf"]
+  },
+  {
+    title: "Sed Do Eiusmod Tempor",
+    content: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+    files: []
+  },
+  {
+    title: "Ut Enim Ad Minim Veniam",
+    content: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    files: ["rapor.docx"]
+  },
+  {
+    title: "Duis Aute Irure Dolor",
+    content: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    files: ["screen1.jpg"]
+  }
+];
+
+// GRID OLUŞTUR
+const grid = document.getElementById("gridArea");
+announcements.forEach((a, i) => {
+    grid.innerHTML += `
+        <div class="card-pixel" onclick="openModal(${i})">
+            <h4 style="font-size:16px;">${a.title}</h4>
+            <p style="font-size:12px; opacity:0.7;">${a.content.substring(0, 60)}...</p>
+        </div>
+    `;
+});
+
+// MODAL AÇ/KAPAT
+function openModal(i) {
+    const a = announcements[i];
+    document.getElementById("modalTitle").innerText = a.title;
+    document.getElementById("modalContent").innerText = a.content;
+
+    let fileHTML = "";
+    a.files.forEach(f => fileHTML += `<p><a href="#">${f}</a></p>`);
+    document.getElementById("modalFiles").innerHTML = fileHTML;
+
+    document.getElementById("modalPixel").style.display = "flex";
+}
+
+function closeModal() {
+    document.getElementById("modalPixel").style.display = "none";
+}
+</script>
+
+</body>
+</html>
